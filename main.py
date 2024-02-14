@@ -40,25 +40,10 @@ class StateChangedException(Exception):
     pass
 
 
-RobotModes = {
-    "NOCODE": 1,
-    "DISABLEDNOAUTO": 2,
-    "DISABLEDWITHAUTO": 3,
-    "ENABLED": 4
-}
-
-RobotStates = {
-    "NOTHOLDINGSTATE": 1,
-    "HOLDINGNOTE": 2,
-    "SHOOTING" : 3,
-    "INTAKING" : 4,
-    "SIGNIALINGAMP" : 5,
-    "INHORRIBLESTATE" : 6
-    }
 Colors = {"RED": (255, 0, 0), "ORANGE": (255, 100, 100), "GRAY": (100, 100, 100), "GREEN": (0,255,0), "BLUE":(0,0,255), "BLACK":(0,0,0)}
 
-robot_state = RobotStates["NOTHOLDINGSTATE"]
-robot_mode = RobotModes["NOCODE"]
+robot_state = 1
+robot_mode = 1
 r, g, b = 0, 0, 0
 steps = 30
 waittime = 0.04
@@ -69,11 +54,10 @@ Sets color of all pixels, used primarily with static lights
 """
 def set_color(color: str):
     global r, g, b
-
     if color in Colors:
-        r, g, b = Colors[color]
+        (r, g, b) = Colors[color]
     else:
-        print("color not in Color")
+        print("color not in Colors")
 
 
 def flash():
@@ -108,11 +92,11 @@ def wait_and_check(waittime: float):
             
 
 def get_robot_state():
-    return RobotStates["HOLDINGNOTE"]
+    return 2
 
 
 def get_robot_mode():
-    return RobotModes["ENABLED"]
+    return 4
 
 
 # Main function
@@ -126,35 +110,32 @@ def main():
 
     # Run the lights (actual displaying)
     try:
-        if not robot_mode in RobotModes:
-            print("Robot mode not matched")
-            return
         
-        if robot_mode == RobotModes["NOCODE"]:
-            set_color(Colors["ORANGE"])
+        if robot_mode == 1:
+            set_color("ORANGE")
             static()
 
-        elif robot_mode == RobotModes["DISABLEDNOAUTO"]:
-            set_color(Colors["GRAY"])
+        elif robot_mode == 2:
+            set_color("GRAY")
             static()
 
-        elif robot_mode == RobotModes["DISABLEDWITHAUTO"]:
-            set_color(Colors["GRAY"])
+        elif robot_mode == 3:
+            set_color("GRAY")
             flash()
 
-        else:
+        elif robot_mode == 4:
             # Else enabled
-            if robot_state == RobotStates["NOTHOLDINGNOTE"]:
-                set_color(Colors["BLUE"])
+            if robot_state == 1:
+                set_color("BLUE")
                 static()
-            elif robot_state == RobotStates["HOLDINGNOTE"]:
-                set_color(Colors["GREEN"])
+            elif robot_state == 2:
+                set_color("GREEN")
                 static()
-            elif robot_state == RobotStates["SHOOTING"]:
+            elif robot_state == 3:
                 pass
-            elif robot_state == RobotStates["INTAKING"]:
+            elif robot_state == 4:
                 pass
-            elif robot_state == RobotStates["SIGNALINGAMP"]:
+            elif robot_state == 5:
                 pass
             else:
                 pass
