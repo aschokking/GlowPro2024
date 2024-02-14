@@ -21,7 +21,8 @@
 #     movingRainbow = movingRainbow+1
 
 ############################################################################################
-from enum import Enum as enum
+import sys
+print(sys.version)
 import time
 from digitalio import DigitalInOut, Direction, Pull
 import board
@@ -30,6 +31,7 @@ from rainbowio import colorwheel
 
 
 # Stuff from 2023, might need to be updated
+# connect the pin to D5
 PIXEL_PIN = board.D5
 NUM_PIXELS = 20
 pixels = neopixel.NeoPixel(PIXEL_PIN, NUM_PIXELS, brightness=1, auto_write=False)
@@ -38,48 +40,25 @@ class StateChangedException(Exception):
     pass
 
 
-class RobotMode(enum):
-    NoCode = 1
-    DisabledNoAuto = 2
-    DisabledWithAuto = 3
-    Enabled = 4
-    
-class RobotStateEnum(enum):
-    # Static
-    NotHoldingNote = 1
-    HoldingNote = 2
+RobotModes = {
+    "NOCODE": 1,
+    "DISABLEDNOAUTO": 2,
+    "DISABLEDWITHAUTO": 3,
+    "ENABLED": 4
+}
 
-    # Action
-    Shooting = 3
-    Intaking = 4
+RobotStates = {
+    "NOTHOLDINGSTATE": 1,
+    "HOLDINGNOTE": 2,
+    "SHOOTING" : 3,
+    "INTAKING" : 4,
+    "SIGNIALINGAMP" : 5,
+    "INHORRIBLESTATE" : 6
+    }
+Colors = {"RED": (255, 0, 0), "ORANGE": (255, 100, 100), "GRAY": (100, 100, 100), "GREEN": (0,255,0), "BLUE":(0,0,255), "BLACK":(0,0,0)}
 
-    # Communication
-    SignalingAmp = 5
-
-    # Other
-    InHorribleState = 6
-
-
-class LightDisplayState(enum):
-    Static = 1
-    Flashing = 2
-    Rainbow = 3
-
-
-class Colors(enum):
-    Red = 1
-    Orange = 2
-    Green = 3
-    Blue = 4
-    White = 5
-    Yellow = 6
-    Gray = 7
-    Black = 8
-
-    
-light_state = LightDisplayState.Static
-robot_state = RobotStateEnum.NotHoldingNote
-robot_mode = RobotMode.NoCode
+robot_state = RobotStates["NOTHOLDINGSTATE"]
+robot_mode = RobotModes["NOCODE"]
 r, g, b = 0, 0, 0
 steps = 30
 waittime = 0.04
@@ -88,24 +67,13 @@ waittime = 0.04
 """
 Sets color of all pixels, used primarily with static lights
 """
-def set_color(color: Colors):
+def set_color(color: str):
     global r, g, b
 
-    match color:
-        case Colors.Red:
-            r, g, b = 255, 0, 0
-        case Colors.Green:
-            r, g, b = 0, 255, 0
-        case Colors.Blue:
-            r, g, b = 0, 0, 255
-        case Colors.White:
-            r, g, b = 255, 255, 255
-        case Colors.Yellow:
-            r, g, b = 255, 255, 0
-        case Colors.Gray:
-            r, g, b = 96, 96, 96
-        case Colors.Black: 
-            r, g, b = 0, 0, 0
+    if color in Colors:
+        r, g, b = Colors[color]
+    else:
+        print("color not in Color")
 
 
 def flash():
@@ -129,19 +97,6 @@ def static():
         pixels[pixel] = (r, g, b)
     pixels.show()
     time.sleep(waittime)
-
-
-# Runs when robot is enabled
-def enabled():
-    match light_state:
-        case LightDisplayState.Static:
-            static()
-
-        case LightDisplayState.Flashing:
-            flash()
-        
-        case _:
-            print("Light state not matched")
  
 
 def wait_and_check(waittime: float):
@@ -153,11 +108,11 @@ def wait_and_check(waittime: float):
             
 
 def get_robot_state():
-    return RobotStateEnum.NotHoldingNote
+    return RobotStates["HOLDINGNOTE"]
 
 
 def get_robot_mode():
-    return RobotMode.Enabled
+    return RobotModes["ENABLED"]
 
 
 # Main function
@@ -171,56 +126,38 @@ def main():
 
     # Run the lights (actual displaying)
     try:
-        match robot_mode:
-            case RobotMode.NoCode:
-                # Runs when there is no code on the RoboRIO, STATIC BLACK
-                set_color(Colors.Black)
+        if not robot_mode in RobotModes:
+            print("Robot mode not matched")
+            return
+        
+        if robot_mode == RobotModes["NOCODE"]:
+            set_color(Colors["ORANGE"])
+            static()
+
+        elif robot_mode == RobotModes["DISABLEDNOAUTO"]:
+            set_color(Colors["GRAY"])
+            static()
+
+        elif robot_mode == RobotModes["DISABLEDWITHAUTO"]:
+            set_color(Colors["GRAY"])
+            flash()
+
+        else:
+            # Else enabled
+            if robot_state == RobotStates["NOTHOLDINGNOTE"]:
+                set_color(Colors["BLUE"])
                 static()
-
-            case RobotMode.DisabledNoAuto:
-                # Runs when there is code on RoboRIO, not enabled, no auto set, STATIC GRAY
-                set_color(Colors.Gray)
+            elif robot_state == RobotStates["HOLDINGNOTE"]:
+                set_color(Colors["GREEN"])
                 static()
-
-            case RobotMode.DisabledWithAuto:
-                # Runs when there is code on RoboRIO, not enabled, has auto set, FLASHING GRAY
-                set_color(Colors.Gray)
-                flash()
-
-            case RobotMode.Enabled:
-                # Runs when there is code on RoboRIO, enabled, actions of lights
-
-                # Update lights color and state
-                match robot_state:
-                    case RobotStateEnum.NotHoldingNote:
-                        set_color(Colors.Blue)
-                        light_state = LightDisplayState.Static
-
-                    case RobotStateEnum.HoldingNote:
-                        set_color(Colors.Green)
-                        light_state = LightDisplayState.Static
-
-                    case RobotStateEnum.Shooting:
-                        light_state = LightDisplayState.Flashing
-                        pass
-                    
-                    case RobotStateEnum.Intaking:
-                        pass
-
-                    case RobotStateEnum.SignalingAmp:
-                        pass
-
-                    case RobotStateEnum.InHorribleState:
-                        set_color(Colors.Red)
-                        pass
-
-                    case _:
-                        print("Robot state not matched, Reasons: Not enabled; state passed in we do not contain.")
-
-                enabled()
-
-            case _:
-                print("Robot mode not matched")
+            elif robot_state == RobotStates["SHOOTING"]:
+                pass
+            elif robot_state == RobotStates["INTAKING"]:
+                pass
+            elif robot_state == RobotStates["SIGNALINGAMP"]:
+                pass
+            else:
+                pass
 
     except StateChangedException:
         # Restarting loop as mode has been changed
