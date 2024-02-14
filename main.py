@@ -40,13 +40,18 @@ class StateChangedException(Exception):
     pass
 
 
-Colors = {"RED": (255, 0, 0), "ORANGE": (255, 100, 100), "GRAY": (100, 100, 100), "GREEN": (0,255,0), "BLUE":(0,0,255), "BLACK":(0,0,0)}
+Colors = {
+    "RED": (255, 0, 0),
+    "ORANGE": (255, 100, 100),
+    "GRAY": (100, 100, 100),
+    "GREEN": (0,255,0),
+    "BLUE":(0,0,255)}
 
 robot_state = 1
 robot_mode = 1
 r, g, b = 0, 0, 0
-steps = 30
-waittime = 0.04
+steps = 40
+waittime = 1 / steps
 
 
 """
@@ -92,10 +97,11 @@ def wait_and_check(waittime: float):
             
 
 def get_robot_state():
-    return 2
+    return 5
 
 
 def get_robot_mode():
+    # 4: ENABLED
     return 4
 
 
@@ -112,19 +118,22 @@ def main():
     try:
         
         if robot_mode == 1:
+            # NO_CODE
             set_color("ORANGE")
             static()
 
         elif robot_mode == 2:
+            # DISABLED_NO_AUTO
             set_color("GRAY")
             static()
 
         elif robot_mode == 3:
+            # DISABLED_WITH_AUTO
             set_color("GRAY")
             flash()
 
         elif robot_mode == 4:
-            # Else enabled
+            # ENABLED
             if robot_state == 1:
                 set_color("BLUE")
                 static()
@@ -132,10 +141,16 @@ def main():
                 set_color("GREEN")
                 static()
             elif robot_state == 3:
+                set_color("GRAY")
+                static()
                 pass
             elif robot_state == 4:
+                set_color("RED")
+                flash()
                 pass
             elif robot_state == 5:
+                set_color("GREEN")
+                static()
                 pass
             else:
                 pass
@@ -188,6 +203,7 @@ if __name__ == "__main__":
 #     global light_stateg
 #     while True:
 #         pass#below is a function for testing flashing
+        
         
 
 # def flashing_lights(color):
