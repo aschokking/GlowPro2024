@@ -1,5 +1,3 @@
-
-# PIXEL_PIN = board.D5
 # NUM_PIXELS = 20
 
 # pixels = neopixel.NeoPixel(PIXEL_PIN, NUM_PIXELS, brightness=1, auto_write=False)
@@ -31,7 +29,6 @@ from rainbowio import colorwheel
 
 
 # Stuff from 2023, might need to be updated
-# connect the pin to D5
 PIXEL_PIN = board.D5
 NUM_PIXELS = 20
 pixels = neopixel.NeoPixel(PIXEL_PIN, NUM_PIXELS, brightness=1, auto_write=False)
@@ -50,7 +47,7 @@ Colors = {
 robot_state = 1
 robot_mode = 1
 r, g, b = 0, 0, 0
-steps = 40
+steps = 25
 waittime = 1 / steps
 
 
@@ -97,7 +94,7 @@ def wait_and_check(waittime: float):
             
 
 def get_robot_state():
-    return 5
+    return 4
 
 
 def get_robot_mode():
@@ -116,7 +113,6 @@ def main():
 
     # Run the lights (actual displaying)
     try:
-        
         if robot_mode == 1:
             # NO_CODE
             set_color("ORANGE")
