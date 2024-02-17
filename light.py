@@ -10,3 +10,4 @@ class Light:
         self.channel = channel
         self.pattern = None
         self.PIXEL_COUNT = pixel_count
+        self.pattern_starting_loop = 0

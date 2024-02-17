@@ -42,3 +42,15 @@ def rainbow(light: Light):
     for pixel in range(light.PIXEL_COUNT):
         light.neopixel[pixel] = colorwheel(((255 / frames) * loopcount) % 255)
     light.neopixel.show()
+
+
+def railgun(light: Light):
+    for pixel in range(light.PIXEL_COUNT):
+        # == pixel for a bullet and >= for a stream
+        if loopcount - light.pattern_starting_loop >= pixel + light.PIXEL_COUNT:
+            light.neopixel[pixel] = light.secondary
+        elif loopcount - light.pattern_starting_loop > pixel:
+            light.neopixel[pixel] = light.primary
+        else:
+            light.neopixel[pixel] = (0, 0, 0)
+    light.neopixel.show()
