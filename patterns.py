@@ -43,7 +43,8 @@ def rainbow(light: Light):
 
 def railgun(light: Light):
     for pixel in range(light.PIXEL_COUNT):
-        if loopcount - light.pattern_starting_loop == pixel + light.PIXEL_COUNT or loopcount - light.pattern_starting_loop == pixel + light.PIXEL_COUNT + 1:
+        # == pixel for a bullet and >= for a stream
+        if loopcount - light.pattern_starting_loop >= pixel + light.PIXEL_COUNT:
             light.neopixel[pixel] = light.secondary
         elif loopcount - light.pattern_starting_loop > pixel:
             light.neopixel[pixel] = light.primary
