@@ -91,10 +91,10 @@ def initialize():
     lights = [light1]
     return lights
 
-
 # Main Loop
 if __name__ == "__main__":
     lights = initialize()
     robot_state = get_states()
     while True:
         main_loop(lights)
+
