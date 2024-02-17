@@ -1,8 +1,10 @@
 from rainbowio import colorwheel
-from robot_states import frames
 from light import Light
 from math import sin
 
+frames = 25
+frame_interval = 1
+frame_time_per_interval = frame_interval / frames
 loopcount = 0
 
 
@@ -13,12 +15,13 @@ def static(light: Light):
 
 
 def flashing(light: Light):
-    multiplier = sin(loopcount) + 1
+    multiplier = sin(loopcount / 5) + 1
     for pixel in range(light.PIXEL_COUNT):
         light.neopixel[pixel] = tuple(x * (multiplier/2) for x in light.primary)
     light.neopixel.show()
         
 
+# ALTERNATING DOESN'T LOOK GOOD
 def alternating(light: Light):
     for pixel in range(light.PIXEL_COUNT):
         if (pixel + loopcount) % 2 == 0:
