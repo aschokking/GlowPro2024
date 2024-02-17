@@ -44,6 +44,11 @@ def match_state_with_pattern(light: Light):
         light.primary = Colors["ORANGE"]
         light.pattern = patterns.static
 
+    elif light.state == 6:
+        light.primary = Colors["BLUE"]
+        light.secondary = Colors["GRAY"]
+        light.pattern = patterns.railgun
+
 
 def main_loop(lights: list[Light]):
     # Assuming we are getting a state
@@ -51,7 +56,14 @@ def main_loop(lights: list[Light]):
     global robot_state
     global recorded_mode
     patterns.loopcount += 1
-    robot_state = get_states() # Placed here because we always want to update our states
+
+    new_states = get_states()
+    for light in lights:
+        if new_states[light.channel] != robot_state[light.channel]:
+            print("CHanged")
+            light.pattern_starting_loop = patterns.loopcount
+
+    robot_state = new_states # Placed here because we always want to update our states
     recorded_mode = get_mode()
 
     if recorded_mode == 1:
@@ -66,7 +78,7 @@ def main_loop(lights: list[Light]):
     elif recorded_mode == 4:
         for light in lights:
             light.state = robot_state[light.channel]
-            match_state_with_pattern()
+            match_state_with_pattern(light)
 
     for light in lights:
         if light.pattern != None:
@@ -83,5 +95,6 @@ def initialize():
 # Main Loop
 if __name__ == "__main__":
     lights = initialize()
+    robot_state = get_states()
     while True:
         main_loop(lights)
