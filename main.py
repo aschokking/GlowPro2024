@@ -19,23 +19,18 @@
 #     movingRainbow = movingRainbow+1
 
 ############################################################################################
-import sys
-print(sys.version)
-import time
 from digitalio import DigitalInOut, Direction, Pull
 import board
 import neopixel
 from rainbowio import colorwheel
+from light import Light
+import patterns
+from robot_states import recorded_mode, get_mode, get_states, ModeChangedException, frame_time_per_interval
+import threading
+import time
 
 
 # Stuff from 2023, might need to be updated
-PIXEL_PIN = board.D5
-NUM_PIXELS = 20
-pixels = neopixel.NeoPixel(PIXEL_PIN, NUM_PIXELS, brightness=1, auto_write=False)
-
-class StateChangedException(Exception):
-    pass
-
 
 Colors = {
     "RED": (255, 0, 0),
@@ -44,123 +39,83 @@ Colors = {
     "GREEN": (0,255,0),
     "BLUE":(0,0,255)}
 
-robot_state = 1
-robot_mode = 1
-r, g, b = 0, 0, 0
-steps = 25
-waittime = 1 / steps
-
+robot_state: list[int]
+mainloop_count = 0
 
 """
 Sets color of all pixels, used primarily with static lights
 """
-def set_color(color: str):
-    global r, g, b
-    if color in Colors:
-        (r, g, b) = Colors[color]
-    else:
-        print("color not in Colors")
 
 
-def flash():
-    # Dark -> Bright
-    for step in range(0, steps+1, 1):
-        for pixel in range(NUM_PIXELS):
-            pixels[pixel] = (r*step/steps, g*step/steps, b*step/steps)
-        pixels.show()
-        wait_and_check(waittime)
+def light_main_loop(light: Light, loopcount: int):
+    while mainloop_count == loopcount:
+        if robot_state[light.key] == 1:
+            light.primary = Colors["BLUE"]
+            patterns.static(light)
 
-    # Bright -> Dark
-    for step in range(steps, 0, -1):
-        for pixel in range(NUM_PIXELS):
-            pixels[pixel] = (r*step/steps, g*step/steps, b*step/steps)
-        pixels.show()
-        wait_and_check(waittime)
+        elif robot_state[light.key] == 2:
+            light.primary = Colors["GREEN"]
+            patterns.static(light)
 
+        elif robot_state[light.key] == 3:
+            light.primary = Colors["GRAY"]
+            patterns.static(light)
 
-def static():
-    for pixel in range(NUM_PIXELS):
-        pixels[pixel] = (r, g, b)
-    pixels.show()
-    time.sleep(waittime)
- 
+        elif robot_state[light.key] == 4:
+            light.primary = Colors["RED"]
+            patterns.flashing(light)
 
-def wait_and_check(waittime: float):
-    # Robot updates every "waittime", so our frames per second is 1/waittime, waittime = 0.04 means 25 fps
-    if robot_state == get_robot_state() and robot_mode == get_robot_mode():
-        time.sleep(waittime)
-    else:
-        raise StateChangedException("Robot state or mode changed")
-            
-
-def get_robot_state():
-    return 4
+        elif robot_state[light.key] == 5:
+            light.primary = Colors["ORANGE"]
+            patterns.static(light)
 
 
-def get_robot_mode():
-    # 4: ENABLED
-    return 4
-
-
-# Main function
-def main():
+def main_loop(lights: list[Light]):
     # Assuming we are getting a state
     # Also, "action" or "rainbow" states should have higher priority than static
     global robot_state
-    global robot_mode
-    robot_state = get_robot_state()
-    robot_mode = get_robot_mode()
+    global recorded_mode
+    global mainloop_count
+    robot_state = get_states() # Placed here because we always want to update our states
 
-    # Run the lights (actual displaying)
-    try:
-        if robot_mode == 1:
-            # NO_CODE
-            set_color("ORANGE")
-            static()
+    if recorded_mode == get_mode():
+        time.sleep(frame_time_per_interval)
+        return
 
-        elif robot_mode == 2:
-            # DISABLED_NO_AUTO
-            set_color("GRAY")
-            static()
+    mainloop_count += 1
+    recorded_mode = get_mode()
 
-        elif robot_mode == 3:
-            # DISABLED_WITH_AUTO
-            set_color("GRAY")
-            flash()
-
-        elif robot_mode == 4:
-            # ENABLED
-            if robot_state == 1:
-                set_color("BLUE")
-                static()
-            elif robot_state == 2:
-                set_color("GREEN")
-                static()
-            elif robot_state == 3:
-                set_color("GRAY")
-                static()
-                pass
-            elif robot_state == 4:
-                set_color("RED")
-                flash()
-                pass
-            elif robot_state == 5:
-                set_color("GREEN")
-                static()
-                pass
-            else:
-                pass
-
-    except StateChangedException:
-        # Restarting loop as mode has been changed
+    if recorded_mode == 1:
         pass
-    
-        
+
+    elif recorded_mode == 2:
+        pass
+
+    elif recorded_mode == 3:
+        pass
+
+    elif recorded_mode == 4:
+        # Update light states in lights
+        # While True, have the lights display their states
+        for light in lights:
+            light.state = robot_state[light.key]
+            thread = threading.Thread(target=light_main_loop, args=(light, mainloop_count))
+            thread.start()
+
+
+def initialize():
+    light1 = Light(board.D5, 20)
+    lights = [light1]
+    for key, light in enumerate(lights):
+        light.key = key
+
+    return lights
 
 # Main Loop
 if __name__ == "__main__":
+    lights = initialize()
     while True:
-        main()
+        main_loop(lights)
 
 
 # So apparently how this year (2024) lights will work is that we will get like a serial, a text constantly on
