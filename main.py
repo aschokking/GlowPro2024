@@ -59,7 +59,7 @@ def main_loop(lights: list[Light]):
     elif recorded_mode == 4:
         for light in lights:
             light.state = robot_state[light.channel]
-            match_state_with_pattern()
+            match_state_with_pattern(light)
 
     for light in lights:
         if light.pattern != None:
