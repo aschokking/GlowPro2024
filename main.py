@@ -2,11 +2,8 @@ from digitalio import DigitalInOut, Direction, Pull
 import board
 from light import Light
 import patterns
-from robot_states import recorded_mode, get_mode, get_states, frame_time_per_interval
+from robot_communication import recorded_mode, get_mode, get_states
 import time
-
-
-# Stuff from 2023, might need to be updated
 
 Colors = {
     "RED": (255, 0, 0),
@@ -17,10 +14,6 @@ Colors = {
 
 robot_state: list[int]
 mainloop_count = 0
-
-"""
-Sets color of all pixels, used primarily with static lights
-"""
 
 
 def match_state_with_pattern(light: Light):
@@ -83,7 +76,7 @@ def main_loop(lights: list[Light]):
     for light in lights:
         if light.pattern != None:
             light.pattern(light)
-    time.sleep(frame_time_per_interval)
+    time.sleep(patterns.frame_time_per_interval)
 
 
 def initialize():
