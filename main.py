@@ -5,9 +5,6 @@ import patterns
 from robot_states import recorded_mode, get_mode, get_states, frame_time_per_interval
 import time
 
-
-# Stuff from 2023, might need to be updated
-
 Colors = {
     "RED": (255, 0, 0),
     "ORANGE": (255, 100, 100),
@@ -17,10 +14,6 @@ Colors = {
 
 robot_state: list[int]
 mainloop_count = 0
-
-"""
-Sets color of all pixels, used primarily with static lights
-"""
 
 
 def match_state_with_pattern(light: Light):
