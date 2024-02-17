@@ -56,7 +56,6 @@ def flash():
             pixels[pixel] = (r*frame/fps, g*frame/fps, b*frame/fps)
         pixels.show()
         check_robot_changed()
-
     # Bright -> Dark
     for frame in range(fps, 0, -1):
         for pixel in range(NUM_PIXELS):
@@ -93,31 +92,22 @@ def moving_rainbow():
 #             pixels[pixel] = colorwheel(r, g, b)
 
 def wavy():
-    wavelength = 10  # Adjust distance from "empty points" and "colored points" the higher the number the smaller the gap
-    brightness = 20  # Adjust brightness, lower number = less bright
-    speed = 0.125 #Adjust speed to change the speed of the wave, closer to 0 is slower
-
     # Initialize speed
-    t = 0
-
+    loop = 0
     # Loop for movement of the lights
     while True:
         # Update time for animation
-        t += speed
+        loop += 1
 
         # Calculate brightness for each pixel
         for pixel in range(NUM_PIXELS):
-            # wave formula
-            waves = brightness * math.sin(2 * math.pi * (pixel / wavelength - t)) + brightness
-            waves = max(0, min(255, int(waves)))  # Ensure brightness is in valid range (0-255)
-            print(waves)
-
-            # Apply the calculated brightness to the pixel
-            pixels[pixel] = (waves)
+            multiplier = math.sin(pixel + loop)
+            multiplier = max(0, multiplier)
+            pixels[pixel] = (r*multiplier, g*multiplier, b*multiplier)
 
         pixels.show()  # Update the NeoPixels with the new colors
-        #time.sleep()
-        check_robot_changed()  # delay between movement
+        time.sleep(0.05)
+        check_robot_changed()  
 
     return
     

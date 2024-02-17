@@ -1,4 +1,4 @@
-from robotstates import get_robot_state, get_robot_mode, RobotChangedException
+from robotstates import get_robot_state, get_robot_mode, RobotChangedException, update_state_and_mode
 from patterns import static, moving_rainbow, flash, set_primary_color, set_secondary_color, wavy #alternating
 
 
@@ -6,8 +6,10 @@ from patterns import static, moving_rainbow, flash, set_primary_color, set_secon
 def main_loop():
     # Assuming we are getting a state
     # Also, "action" or "rainbow" states should have higher priority than static
+    update_state_and_mode()
     robot_state = get_robot_state()
     robot_mode = get_robot_mode()
+    
 
     # Run the lights (actual displaying)
     try:
@@ -35,8 +37,8 @@ def main_loop():
                 set_primary_color("GREEN")
                 moving_rainbow()
             elif robot_state == 3:
-                set_primary_color("GRAY")
-                static()
+                set_primary_color("RED")
+                flash()
                 pass
             elif robot_state == 4:
                 set_primary_color("RED")
@@ -54,7 +56,7 @@ def main_loop():
                 print("State not matched")
         else:
             print("Mode not matched") # Not the best code aesthetics
-
+        
     except RobotChangedException:
         # Restarting loop as mode has been changed
         pass
