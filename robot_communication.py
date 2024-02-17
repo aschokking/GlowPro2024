@@ -13,7 +13,6 @@ def get_states() -> list[int]:
     #     return [6]
     # if time.time() - starting >= 8:
     #     return[2]
-    return [6]
 
 
 def get_mode():
