@@ -1,5 +1,4 @@
 import time
-from light import Light
 frames = 70
 frame_interval = 5
 frame_time_per_interval = frame_interval / frames
@@ -13,6 +12,7 @@ def get_states() -> list[int]:
     #     return [6]
     # if time.time() - starting >= 8:
     #     return[2]
+    return [2]
 
 
 def get_mode():

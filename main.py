@@ -1,6 +1,6 @@
 from digitalio import DigitalInOut, Direction, Pull
 import board
-from light import Light
+from light import LightStrip
 import patterns
 from robot_communication import recorded_mode, get_mode, get_states
 import time
@@ -16,7 +16,7 @@ robot_state: list[int]
 mainloop_count = 0
 
 
-def match_state_with_pattern(light: Light):
+def match_state_with_pattern(light: LightStrip):
     if light.state == 1:
         light.primary = Colors["BLUE"]
         light.pattern = patterns.static
@@ -43,7 +43,7 @@ def match_state_with_pattern(light: Light):
         light.pattern = patterns.railgun
 
 
-def main_loop(lights: list[Light]):
+def main_loop(lights: list[LightStrip]):
     # Assuming we are getting a state
     # Also, "action" or "rainbow" states should have higher priority than static
     global robot_state
@@ -80,7 +80,7 @@ def main_loop(lights: list[Light]):
 
 
 def initialize():
-    light1 = Light(0, board.D5, 20)
+    light1 = LightStrip(0, board.D5, 20)
     lights = [light1]
     return lights
 
