@@ -1,119 +1,93 @@
-from robotstates import get_robot_state, get_robot_mode, RobotChangedException, update_state_and_mode
-from patterns import static, moving_rainbow, flash, set_primary_color, set_secondary_color, wavy #alternating
+from digitalio import DigitalInOut, Direction, Pull
+import board
+from light import LightStrip
+import patterns
+from robot_communication import recorded_mode, get_mode, get_states
+import time
+
+Colors = {
+    "RED": (255, 0, 0),
+    "ORANGE": (255, 100, 100),
+    "GRAY": (100, 100, 100),
+    "GREEN": (0,255,0),
+    "BLUE":(0,0,255)}
+
+robot_state: list[int]
+mainloop_count = 0
 
 
-# Main function
-def main_loop():
+def match_state_with_pattern(light: LightStrip):
+    if light.state == 1:
+        light.primary = Colors["BLUE"]
+        light.pattern = patterns.static
+
+    elif light.state == 2:
+        light.primary = Colors["GREEN"]
+        light.pattern = patterns.static
+
+    elif light.state == 3:
+        light.primary = Colors["GRAY"]
+        light.pattern = patterns.static
+
+    elif light.state == 4:
+        light.primary = Colors["RED"]
+        light.pattern = patterns.flashing
+
+    elif light.state == 5:
+        light.primary = Colors["ORANGE"]
+        light.pattern = patterns.static
+
+    elif light.state == 6:
+        light.primary = Colors["BLUE"]
+        light.secondary = Colors["GRAY"]
+        light.pattern = patterns.railgun
+
+
+def main_loop(lights: list[LightStrip]):
     # Assuming we are getting a state
     # Also, "action" or "rainbow" states should have higher priority than static
-    update_state_and_mode()
-    robot_state = get_robot_state()
-    robot_mode = get_robot_mode()
-    
+    global robot_state
+    global recorded_mode
+    patterns.loopcount += 1
 
-    # Run the lights (actual displaying)
-    try:
-        if robot_mode == 1:
-            # NO_CODE
-            set_primary_color("ORANGE")
-            static()
+    new_states = get_states()
+    for light in lights:
+        if new_states[light.channel] != robot_state[light.channel]:
+            print("CHanged")
+            light.pattern_starting_loop = patterns.loopcount
 
-        elif robot_mode == 2:
-            # DISABLED_NO_AUTO
-            set_primary_color("GRAY")
-            static()
+    robot_state = new_states # Placed here because we always want to update our states
+    recorded_mode = get_mode()
 
-        elif robot_mode == 3:
-            # DISABLED_WITH_AUTO
-            set_primary_color("GRAY")
-            flash()
-
-        elif robot_mode == 4:
-            # ENABLED
-            if robot_state == 1:
-                set_primary_color("GREEN")
-                wavy()
-            elif robot_state == 2:
-                set_primary_color("GREEN")
-                moving_rainbow()
-            elif robot_state == 3:
-                set_primary_color("RED")
-                flash()
-                pass
-            elif robot_state == 4:
-                set_primary_color("RED")
-                flash()
-                pass
-            elif robot_state == 5:
-                set_primary_color("GREEN")
-                static()
-                pass
-            elif robot_state == 5:
-                set_primary_color("GREEN")
-                #alternating()
-                pass
-            else:
-                print("State not matched")
-        else:
-            print("Mode not matched") # Not the best code aesthetics
-        
-    except RobotChangedException:
-        # Restarting loop as mode has been changed
+    if recorded_mode == 1:
         pass
-    
-        
+
+    elif recorded_mode == 2:
+        pass
+
+    elif recorded_mode == 3:
+        pass
+
+    elif recorded_mode == 4:
+        for light in lights:
+            light.state = robot_state[light.channel]
+            match_state_with_pattern(light)
+
+    for light in lights:
+        if light.pattern != None:
+            light.pattern(light)
+    time.sleep(patterns.frame_time_per_interval)
+
+
+def initialize():
+    light1 = LightStrip(0, board.D5, 20)
+    lights = [light1]
+    return lights
 
 # Main Loop
 if __name__ == "__main__":
+    lights = initialize()
+    robot_state = get_states()
     while True:
-        main_loop()
+        main_loop(lights)
 
-
-# So apparently how this year (2024) lights will work is that we will get like a serial, a text constantly on
-# probably what command is running and we can update our lights based off of it
-# Keep everything above line 144 just for reference ;), that way we don't have to navigate through github
-
-# Intaking - flashing orange (or any color)
-
-# When holding note with arm - static green
-
-# Shooter Rev - charge up based on desired rpm
-    # Shooting - flash a quick white light
-
-# Not holding note - Blue
-
-# Signal amp button - rave
-
-# In a horrible state - flashing red
-
-# # ## # # # # LightDisplayState.Charging:
-#         brightness += .5
-#     if brightness >= 1
-#         light_state == LightDisplayState.Charging:#below is a function for testing flashing
-# def flashing_lights(color):
-#     delay = 0.25 
-#     flashes = 10
-#     for _ in range(flashes):
-#         set_primary_color(color)
-#         pixels.show()
-#         time.sleep(delay)
-#     pixels.show(False)
-
-
-# #below is a function for testing shooter
-# def shooting_lights(color):
-#     global light_stateg
-#     while True:
-#         pass#below is a function for testing flashing
-        
-        
-
-# def flashing_lights(color):
-#     delay = 0.25 
-#     flashes = 10
-#     for _ in range(flashes):
-#         set_primary_color(color)
-#         pixels.show()
-#         time.sleep(delay)
-#     pixels.show(False)
-# def rainbow_rave()
