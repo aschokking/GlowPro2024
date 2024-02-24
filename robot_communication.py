@@ -1,7 +1,4 @@
 import time
-frames = 70
-frame_interval = 5
-frame_time_per_interval = frame_interval / frames
 
 recorded_mode = 0
 starting = time.time()
