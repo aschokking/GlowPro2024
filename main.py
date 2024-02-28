@@ -1,7 +1,6 @@
 from digitalio import DigitalInOut, Direction, Pull
 import busio
 import board
-from light import LightStrip
 import patterns
 from robot_communication import recorded_mode, get_mode, get_states
 import time
@@ -81,35 +80,50 @@ serial = sys.stdin
 # loop-y-loop
 ################################################################
 # f = open("Logs.txt", "a")
-
+loopcount = 0
 while True:
+    loopcount += 1
     # read the REPL serial line by line when there's data
     # note that this assumes that the host always sends a full line
     if supervisor.runtime.serial_bytes_available:
         data_in = serial.readline()
         # f.write(data_in)
-        print("Data in: "+data_in)
-        print(type(data_in))
+        #print("Data in: "+data_in)
+        #print(type(data_in))
 
-        if not data_in:
+        # Red if bytes available but can't get, yellow if == 36
+        # Green if otherwise
+        # if 1 then yellow
+        if int(data_in) == 1:
             for pixel in range(20):
-                pix[pixel] = (255,0,0)
+                pix[pixel] = (255,255,224) # Yellow
             pix.show()
             time.sleep(0.5)
             continue
 
-        if int(data_in) == 1:
+        if not data_in:
             for pixel in range(20):
-                pix[pixel] = (200,100,100)
+                pix[pixel] = (255,0,0) # RED
+            pix.show()
+            time.sleep(0.5)
+            continue
+
+
+        for pixel in range(20):
+            pix[pixel] = (0,255,0) # GREEN
+        pix.show()
+        time.sleep(0.5)
+    else:
+        # Blue if nothing to read
+        if loopcount % 2 == 0:
+            for pixel in range(20):
+                pix[pixel] = (0,0,100) # BLUE
+            pix.show()
         else:
             for pixel in range(20):
-                pix[pixel] = (0,255,0)
+                pix[pixel] = (0,0,0) # Nothing
+            pix.show()
         time.sleep(0.5)
-        pix.show()
-    else:
-        for pixel in range(20):
-            pix[pixel] = (0,0,255)
-        pix.show()
 
 
 
@@ -146,80 +160,3 @@ while True:
 #         for pixel in range(l.PIXEL_COUNT):
 #                 l.neopixel[pixel] = (255,0,0)
 #                 l.neopixel.show()
-
-
-def match_state_with_pattern(light: LightStrip):
-    if light.state == 1:
-        light.primary = Colors["BLUE"]
-        light.pattern = patterns.static
-
-    elif light.state == 2:
-        light.primary = Colors["GREEN"]
-        light.pattern = patterns.static
-
-    elif light.state == 3:
-        light.primary = Colors["GRAY"]
-        light.pattern = patterns.static
-
-    elif light.state == 4:
-        light.primary = Colors["RED"]
-        light.pattern = patterns.flashing
-
-    elif light.state == 5:
-        light.primary = Colors["ORANGE"]
-        light.pattern = patterns.static
-
-    elif light.state == 6:
-        light.primary = Colors["BLUE"]
-        light.secondary = Colors["GRAY"]
-        light.pattern = patterns.railgun
-
-
-def main_loop(lights: list[LightStrip]):
-    # Assuming we are getting a state
-    # Also, "action" or "rainbow" states should have higher priority than static
-    global robot_state
-    global recorded_mode
-    patterns.loopcount += 1
-
-    new_states = get_states()
-    for light in lights:
-        if new_states[light.channel] != robot_state[light.channel]:
-            print("CHanged")
-            light.pattern_starting_loop = patterns.loopcount
-
-    robot_state = new_states # Placed here because we always want to update our states
-    recorded_mode = get_mode()
-
-    if recorded_mode == 1:
-        pass
-
-    elif recorded_mode == 2:
-        pass
-
-    elif recorded_mode == 3:
-        pass
-
-    elif recorded_mode == 4:
-        for light in lights:
-            light.state = robot_state[light.channel]
-            match_state_with_pattern(light)
-
-    for light in lights:
-        if light.pattern != None:
-            light.pattern(light)
-    time.sleep(patterns.frame_time_per_interval)
-
-
-def initialize():
-    light1 = LightStrip(0, board.D5, 20)
-    lights = [light1]
-    return lights
-
-
-if __name__ == "__main__":
-    lights = initialize()
-    robot_state = get_states()
-    while True:
-        main_loop(lights)
-

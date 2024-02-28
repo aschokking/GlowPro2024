@@ -1,6 +1,6 @@
 import neopixel
 
-class Light:
+class LightStrip:
 
     def __init__(self, channel, pixel_pin, pixel_count) -> None:
         self.neopixel = neopixel.NeoPixel(pixel_pin, pixel_count, brightness=1, auto_write=False)
