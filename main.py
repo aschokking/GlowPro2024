@@ -94,13 +94,6 @@ while True:
         # Red if bytes available but can't get, yellow if == 36
         # Green if otherwise
         # if 1 then yellow
-        if int(data_in) == 1:
-            for pixel in range(20):
-                pix[pixel] = (255,255,224) # Yellow
-            pix.show()
-            time.sleep(0.5)
-            continue
-
         if not data_in:
             for pixel in range(20):
                 pix[pixel] = (255,0,0) # RED
@@ -108,11 +101,19 @@ while True:
             time.sleep(0.5)
             continue
 
+        temp = data_in.strip()
 
-        for pixel in range(20):
-            pix[pixel] = (0,255,0) # GREEN
-        pix.show()
-        time.sleep(0.5)
+        if temp == "1":
+            for pixel in range(20):
+                pix[pixel] = (165, 42, 42) # Pink
+            pix.show()
+            time.sleep(0.5)
+        elif temp == "2":
+            for pixel in range(20):
+                pix[pixel] = (42, 42, 165) # Random
+            pix.show()
+            time.sleep(0.5)
+    
     else:
         # Blue if nothing to read
         if loopcount % 2 == 0:
