@@ -43,7 +43,7 @@ current_mode = "31"
 last_mode = "31"
 
 # Create light objects
-strip1 = LightStrip(0, board.D5, 20)
+strip1 = LightStrip(board.D5, 8)
 lightstrips: tuple[LightStrip] = (strip1,)
 
 
