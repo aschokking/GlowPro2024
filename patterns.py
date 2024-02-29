@@ -49,7 +49,7 @@ def wavy(light: LightStrip):
     light.neopixel.show()
     
 
-# Disco party, baby!
+# Disco party baby!
 def rainbow(light: LightStrip):    
     for pixel in range(light.PIXEL_COUNT):
         light.neopixel[pixel] = colorwheel(((255 / frames_per_second) * loopcount) % 255)
@@ -59,7 +59,7 @@ def rainbow(light: LightStrip):
 # Charge up
 def railgun(light: LightStrip):
     for pixel in range(light.PIXEL_COUNT):
-        if loopcount // 2 - light.pattern_starting_loop > pixel:
+        if loopcount - light.pattern_starting_loop > pixel:
             light.neopixel[pixel] = light.primary
         else:
             light.neopixel[pixel] = (0, 0, 0)

@@ -67,6 +67,7 @@ def get_serial_data() -> str:
 
 # Assign colors and patterns to light strips
 def assign_mode(light: LightStrip):
+    # No need to reassign if mode is same as previous loop
     if current_mode == last_mode:
         return
     
