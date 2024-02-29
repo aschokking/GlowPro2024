@@ -3,7 +3,7 @@ from patterns import static
 
 class LightStrip:
 
-    def __init__(self, pixel_pin, pixel_count) -> None:
+    def __init__(self, pixel_pin, pixel_count: int) -> None:
 
         # Create a neopixel for each lightstrip
         self.neopixel = neopixel.NeoPixel(pixel_pin, pixel_count, brightness=1, auto_write=False)
@@ -11,7 +11,7 @@ class LightStrip:
 
         # Colors for different patterns
         self.primary: tuple[int, int, int] = (0, 0, 0)
-        self.secondary = (0, 0, 0)
+        self.secondary: tuple[int, int, int] = (0, 0, 0)
 
         # Pattern function to call on every update
         self.pattern = static
