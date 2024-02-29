@@ -53,6 +53,7 @@ def get_serial_data() -> str:
     if supervisor.serial_bytes_available > 0:
         data = serial.readline()
         if data != None:
+            tolerance_count = 0
             return data.strip()
     
     # Check tolerance and return previous, if tolerance count reached, "31"
