@@ -98,29 +98,32 @@ def assign_mode(light: LightStrip):
 
     elif current_mode == modes["READY_TO_SHOOT"]:
         # Ready to shoot, railgun pattern (requested by drivers)
-        light.primary = (0, 0, 255)
+        light.primary = (0, 255, 0)
         light.pattern = patterns.railgun
 
     elif current_mode == modes["ROBOT_CONTAINS_NOTE"]:
-        # TO-DO
-        pass
+        light.primary = (255, 165, 0)
+        light.pattern = patterns.static
+
     elif current_mode == modes["VISION_SEES_NOTE"]:
-        # TO-DO
-        pass
+        light.primary = (173, 216, 230)
+        light.secondary = (255, 255, 255)
+        light.pattern = patterns.alternating
+
     elif current_mode == modes["DISABLED_WITHOUT_AUTO"]:
         # TO-DO
         pass
+
     elif current_mode == modes["DISABLED_WITH_AUTO"]:
         # TO-DO
         pass
+
     elif current_mode == modes["PURELY_ENABLED"]:
-        # TO-DO
-        pass
+        light.primary = (255, 255, 255)
+        light.pattern = patterns.static
     else:
-        # If serial data received does not match any of our mode
-        # Or is 31 (no code)
-        # TO-DO
-        pass
+        light.primary = (255, 0, 0)
+        light.pattern = patterns.static
 
 
 def main_loop():
