@@ -35,6 +35,7 @@ import supervisor
 import board
 from lightstrip import LightStrip
 import patterns
+import time
 import sys
 
 # Serial data variables
@@ -138,3 +139,9 @@ def main_loop():
         lightstrip.pattern(lightstrip)
 
     last_mode = current_mode
+
+
+def main():
+    while True:
+        main_loop()
+        time.sleep(1 / patterns.frames_per_second)
