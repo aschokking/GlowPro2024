@@ -72,14 +72,15 @@ def get_serial_data() -> str:
 
 
 # MODES
-AMP_SIGNAL = 1
-READY_TO_SHOOT = 2
-ROBOT_CONTAINS_NOTE = 3
-VISION_SEES_NOTE = 4
-DISABLED_WITHOUT_AUTO = 32
-DISABLED_WITH_AUTO = 33
-PURELY_ENABLED = 34 # None of 1-4 are active
-
+modes = {
+    "AMP_SIGNAL": "1",
+    "READY_TO_SHOOT": "2",
+    "ROBOT_CONTAINS_NOTE": "3",
+    "VISION_SEES_NOTE": "4",
+    "DISABLED_WITHOUT_AUTO": "32",
+    "DISABLED_WITH_AUTO": "33",
+    "PURELY_ENABLED": "34" # None of modes 1-4 are active
+}
 
 
 # Assign colors and patterns to light strips
@@ -91,27 +92,27 @@ def assign_mode(light: LightStrip):
     light.pattern_starting_loop = patterns.loopcount
 
     # Update color and pattern on light to display
-    if current_mode == AMP_SIGNAL:
+    if current_mode == modes["AMP_SIGNAL"]:
         light.pattern = patterns.rainbow
 
-    elif current_mode == READY_TO_SHOOT:
+    elif current_mode == modes["READY_TO_SHOOT"]:
         # Ready to shoot, railgun pattern (requested by drivers)
         light.primary = (0, 0, 255)
         light.pattern = patterns.railgun
 
-    elif current_mode == ROBOT_CONTAINS_NOTE:
+    elif current_mode == modes["ROBOT_CONTAINS_NOTE"]:
         # TO-DO
         pass
-    elif current_mode == VISION_SEES_NOTE:
+    elif current_mode == modes["VISION_SEES_NOTE"]:
         # TO-DO
         pass
-    elif current_mode == DISABLED_WITHOUT_AUTO:
+    elif current_mode == modes["DISABLED_WITHOUT_AUTO"]:
         # TO-DO
         pass
-    elif current_mode == DISABLED_WITH_AUTO:
+    elif current_mode == modes["DISABLED_WITH_AUTO"]:
         # TO-DO
         pass
-    elif current_mode == PURELY_ENABLED:
+    elif current_mode == modes["PURELY_ENABLED"]:
         # TO-DO
         pass
     else:
