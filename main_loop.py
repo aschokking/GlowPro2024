@@ -55,7 +55,7 @@ def get_serial_data() -> str:
     global tolerance_count
 
     # Return serial data if any
-    if supervisor.serial_bytes_available:
+    if supervisor.runtime.serial_bytes_available:
         data = serial.readline()
         if data:
             tolerance_count = 0
@@ -75,6 +75,9 @@ def get_serial_data() -> str:
 def main_loop():
     global current_mode
     global last_mode
+
+    # Write to pin
+
 
     # Increment loopcount
     patterns.loopcount += 1

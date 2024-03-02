@@ -51,7 +51,7 @@ class LightStrip:
             self.pattern_function = patterns.railgun
 
         elif current_mode == modes["ROBOT_CONTAINS_NOTE"]:
-            self.primary = (255, 165, 0)
+            self.primary = (255, 80, 0)
             self.pattern_function = patterns.static
 
         elif current_mode == modes["VISION_SEES_NOTE"]:
@@ -60,8 +60,8 @@ class LightStrip:
             self.pattern_function = patterns.alternating
 
         elif current_mode == modes["DISABLED_WITHOUT_AUTO"]:
-            # TO-DO
-            pass
+            self.primary = (255, 40, 40)
+            self.pattern_function = patterns.static
 
         elif current_mode == modes["DISABLED_WITH_AUTO"]:
             # TO-DO
