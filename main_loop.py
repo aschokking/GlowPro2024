@@ -55,7 +55,7 @@ def get_serial_data() -> str:
     global tolerance_count
 
     # Return serial data if any
-    if supervisor.serial_bytes_available:
+    if supervisor.runtime.serial_bytes_available:
         data = serial.readline()
         if data:
             tolerance_count = 0

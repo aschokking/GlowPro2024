@@ -60,12 +60,12 @@ class LightStrip:
             self.pattern_function = patterns.alternating
 
         elif current_mode == modes["DISABLED_WITHOUT_AUTO"]:
-            # TO-DO
-            pass
+            self.primary = (0, 0, 255)
+            self.pattern_function = patterns.breathing
 
         elif current_mode == modes["DISABLED_WITH_AUTO"]:
-            # TO-DO
-            pass
+            self.primary = (0, 0, 255)
+            self.pattern_function = patterns.static
 
         elif current_mode == modes["PURELY_ENABLED"]:
             self.primary = (255, 255, 255)
