@@ -7,6 +7,7 @@ modes = {
     "READY_TO_SHOOT": "2",
     "ROBOT_CONTAINS_NOTE": "3",
     "VISION_SEES_NOTE": "4",
+    "BRAKE_ON": "5",
     "DISABLED_WITHOUT_AUTO": "32",
     "DISABLED_WITH_AUTO": "33",
     "PURELY_ENABLED": "34", # None of modes 1-4 are active
@@ -34,10 +35,11 @@ class LightStrip:
 
 
     # Assign colors and patterns to light strip
-    def assign_mode(self, current_mode: str, last_mode: str):
+    #def assign_mode(self, current_mode: str, last_mode: str):
+    def assign_mode(self, current_mode: str):
         # No need to reassign if mode is same as previous loop
-        if current_mode == last_mode:
-            return
+        #if current_mode == last_mode:
+        #    return
         
         self.pattern_starting_loop = patterns.loopcount
 
@@ -48,7 +50,7 @@ class LightStrip:
         elif current_mode == modes["READY_TO_SHOOT"]:
             # Ready to shoot, railgun pattern (requested by drivers)
             self.primary = (0, 255, 0)
-            self.pattern_function = patterns.railgun
+            self.pattern_function = patterns.static
 
         elif current_mode == modes["ROBOT_CONTAINS_NOTE"]:
             self.primary = (255, 80, 0)
@@ -57,18 +59,21 @@ class LightStrip:
         elif current_mode == modes["VISION_SEES_NOTE"]:
             self.primary = (173, 216, 230)
             self.secondary = (255, 255, 255)
-            self.pattern_function = patterns.alternating
+            self.pattern_function = patterns.flashing
 
         elif current_mode == modes["DISABLED_WITHOUT_AUTO"]:
             self.primary = (255, 40, 40)
             self.pattern_function = patterns.static
 
         elif current_mode == modes["DISABLED_WITH_AUTO"]:
-            # TO-DO
-            pass
+            self.primary = (255, 40, 40)
+            self.pattern_function = patterns.flashing
 
         elif current_mode == modes["PURELY_ENABLED"]:
             self.primary = (255, 255, 255)
+            self.pattern_function = patterns.static
+        elif current_mode == modes["BRAKE_ON"]:
+            self.primary = (0, 0, 255)
             self.pattern_function = patterns.static
         else:
             self.primary = (255, 0, 0)

@@ -1,4 +1,5 @@
-from main_loop import main
+#from watchdog import main
+import main_loop
 
 if __name__ == "__main__":
-    main()
+    main_loop.main()

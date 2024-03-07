@@ -43,42 +43,47 @@ serial = sys.stdin
 tolerance = 2
 tolerance_count = 0
 current_mode = modes["ROBOT_NOCODE"]
-last_mode = modes["ROBOT_NOCODE"]
+last_time = 0
 
 # Create light objects
-strip1 = LightStrip(board.D5, 8)
-lightstrips: tuple[LightStrip] = (strip1,)
+strip1 = LightStrip(board.D5, 32)
+lightstrips = (strip1,)
 
 
 # Retrieves and returns serial data sent by Java side
 def get_serial_data() -> str:
-    global tolerance_count
+    #global tolerance_count
+    global last_time
 
     # Return serial data if any
     if supervisor.runtime.serial_bytes_available:
         data = serial.readline()
         if data:
-            tolerance_count = 0
+            print(data)
+            last_time = time.time()
             return data.strip()
-    
+        elif ((time.time() - last_time) > 0.5) :
+            last_time = time.time()
+            return modes["ROBOT_NOCODE"]
     # Check tolerance and return previous, if tolerance count reached, "31"
     # Tolerance is for if there are no serial data sent from the Java side
     # *There may be some delay if both sides are sending at same or similar rate*
     # Tolerance count is 2, therefore it will tolerate two frames/fps seconds
-    if tolerance_count >= tolerance:
-        tolerance_count = 0
+    #if tolerance_count >= tolerance:
+    #    tolerance_count = 0
+    #    return modes["ROBOT_NOCODE"]
+    #tolerance_count += 1
+    elif ((time.time() - last_time) > 0.5) :
+        last_time = time.time()
         return modes["ROBOT_NOCODE"]
-    tolerance_count += 1
-    return last_mode
+    
+    return current_mode
 
 
 def main_loop():
     global current_mode
-    global last_mode
-
-    # Write to pin
-
-
+    #global last_mode
+    global last_time
     # Increment loopcount
     patterns.loopcount += 1
 
@@ -87,10 +92,11 @@ def main_loop():
 
     # Match lights with serial data and update lights
     for lightstrip in lightstrips:
-        lightstrip.assign_mode(current_mode, last_mode)
+        #lightstrip.assign_mode(current_mode, last_mode)
+        lightstrip.assign_mode(current_mode)
         lightstrip.pattern_function(lightstrip)
 
-    last_mode = current_mode
+    #last_mode = current_mode
 
 
 def main():
