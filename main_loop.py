@@ -54,6 +54,9 @@ last_mode = modes["ROBOT_NOCODE"]
 dio_pins = (board.D10, board.D11, board.D12, board.D13)
 dios = [digitalio.DigitalInOut(pin) for pin in dio_pins]
 
+watch_dog_dio = digitalio.DigitalInOut(board.D9)
+watch_dog_dio.direction = digitalio.Direction.OUTPUT
+
 # Create light objects
 strip1 = LightStrip(board.D5, 8)
 lightstrips: Tuple[LightStrip] = (strip1,)
@@ -85,9 +88,18 @@ def get_binary_data() -> int:
         result |= dio.value << i
     return result
 
+loop_count = 0
+def feed_watch_dog():
+    global loop_count
+    if loop_count % 20 == 0:
+        watch_dog_dio.value = not watch_dog_dio.value
+    loop_count+=1
+
 def main_loop():
     global current_mode
     global last_mode
+
+    feed_watch_dog()
 
     # Increment loopcount
     patterns.loopcount += 1
