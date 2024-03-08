@@ -1,19 +1,21 @@
 """
 MODES:
-[31] No code on robot:
+These are defined in the Java code `LightsStateMessage` here:
+https://github.com/Team488/XBot2024/blob/main/src/main/java/competition/subsystems/lights/LightSubsystem.java
+[15] No code on robot:
 RoboRIO inactive/not receiving serial data from RoboRIO
 
-[32] Disabled without auto
+[7] Disabled without auto
 RoboRIO is disabled, and has NO autonomous program set
 
-[33] Disabled with auto
+[6] Disabled with auto
 RoboRIO is disabled, and DOES have autonomous program set
 
 
 --< Modes for when RoboRIO is enabled >--
-Priority: 1 > 2 > 3 > 4 > 34
+Priority: 1 > 2 > 3 > 4 > 5
 
-[34] Enabled
+[5] Enabled
 RoboRIO is enabled, but none of the above are active.
 
 [1] Signal:
@@ -33,10 +35,13 @@ robot to retrieve a note)
 
 import supervisor
 import board
+from typing import Tuple
 from lightstrip import LightStrip, modes
 import patterns
 import time
 import sys
+
+import digitalio
 
 # Serial data variables
 serial = sys.stdin
@@ -45,10 +50,13 @@ tolerance_count = 0
 current_mode = modes["ROBOT_NOCODE"]
 last_mode = modes["ROBOT_NOCODE"]
 
+# Digital input pins for ready binary data from RoboRIO
+dio_pins = (board.D10, board.D11, board.D12, board.D13)
+dios = [digitalio.DigitalInOut(pin) for pin in dio_pins]
+
 # Create light objects
 strip1 = LightStrip(board.D5, 8)
-lightstrips: tuple[LightStrip] = (strip1,)
-
+lightstrips: Tuple[LightStrip] = (strip1,)
 
 # Retrieves and returns serial data sent by Java side
 def get_serial_data() -> str:
@@ -71,6 +79,11 @@ def get_serial_data() -> str:
     tolerance_count += 1
     return last_mode
 
+def get_binary_data() -> int:
+    result = 0
+    for i, dio in enumerate(dios):
+        result |= dio.value << i
+    return result
 
 def main_loop():
     global current_mode
@@ -79,8 +92,8 @@ def main_loop():
     # Increment loopcount
     patterns.loopcount += 1
 
-    # Read serial data sent by RoboRIO
-    current_mode = get_serial_data()
+    # Read data sent by RoboRIO
+    current_mode = str(get_binary_data())
 
     # Match lights with serial data and update lights
     for lightstrip in lightstrips:
