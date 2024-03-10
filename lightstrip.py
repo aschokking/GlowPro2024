@@ -7,10 +7,10 @@ modes = {
     "READY_TO_SHOOT": "2",
     "ROBOT_CONTAINS_NOTE": "3",
     "VISION_SEES_NOTE": "4",
-    "DISABLED_WITHOUT_AUTO": "32",
-    "DISABLED_WITH_AUTO": "33",
-    "PURELY_ENABLED": "34", # None of modes 1-4 are active
-    "ROBOT_NOCODE": "31"
+    "DISABLED_WITHOUT_AUTO": "7",
+    "DISABLED_WITH_AUTO": "6",
+    "PURELY_ENABLED": "5", # None of modes 1-4 are active
+    "ROBOT_NOCODE": "15"
 }
 
 
