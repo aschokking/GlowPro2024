@@ -35,7 +35,6 @@ robot to retrieve a note)
 
 import supervisor
 import board
-from typing import Tuple
 from lightstrip import LightStrip, modes
 import patterns
 import time
@@ -59,7 +58,7 @@ watch_dog_dio.direction = digitalio.Direction.OUTPUT
 
 # Create light objects
 strip1 = LightStrip(board.D5, 8)
-lightstrips: Tuple[LightStrip] = (strip1,)
+lightstrips = (strip1,)
 
 # Retrieves and returns serial data sent by Java side
 def get_serial_data() -> str:
