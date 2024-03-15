@@ -59,7 +59,7 @@ class LightStrip:
             self.pattern_function = patterns.static
 
         elif current_mode == modes["DISABLED_WITHOUT_AUTO"]:
-            self.primary = (255, 105, 180) # Blue
+            self.primary = (255, 105, 180) # Hot Pink
             self.pattern_function = patterns.static
 
         elif current_mode == modes["DISABLED_WITH_AUTO"]:
