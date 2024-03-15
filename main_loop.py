@@ -35,7 +35,6 @@ robot to retrieve a note)
 
 import supervisor
 import board
-#from typing import Tuple
 from lightstrip import LightStrip, modes
 import patterns
 import time
