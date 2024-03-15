@@ -35,7 +35,7 @@ robot to retrieve a note)
 
 import supervisor
 import board
-from typing import Tuple
+#from typing import Tuple
 from lightstrip import LightStrip, modes
 import patterns
 import time
@@ -58,8 +58,8 @@ watch_dog_dio = digitalio.DigitalInOut(board.D9)
 watch_dog_dio.direction = digitalio.Direction.OUTPUT
 
 # Create light objects
-strip1 = LightStrip(board.D5, 8)
-lightstrips: Tuple[LightStrip] = (strip1,)
+lightStrip = LightStrip(board.D5, 16)
+#lightstrips: LightStrip = (strip1,)
 
 # Retrieves and returns serial data sent by Java side
 def get_serial_data() -> str:
@@ -108,9 +108,9 @@ def main_loop():
     current_mode = str(get_binary_data())
 
     # Match lights with serial data and update lights
-    for lightstrip in lightstrips:
-        lightstrip.assign_mode(current_mode, last_mode)
-        lightstrip.pattern_function(lightstrip)
+    #for lightstrip in lightstrips:
+    lightStrip.assign_mode(current_mode, last_mode)
+    lightStrip.pattern_function(lightStrip)
 
     last_mode = current_mode
 
