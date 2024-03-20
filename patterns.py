@@ -63,3 +63,6 @@ def railgun(light):
         else:
             light.neopixel[pixel] = (0, 0, 0)
     light.neopixel.show()
+    
+    if loopcount - light.pattern_starting_loop > light.PIXEL_COUNT:
+        light.pattern_starting_loop = loopcount
