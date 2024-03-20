@@ -51,12 +51,12 @@ class LightStrip:
             self.pattern_function = patterns.static
 
         elif current_mode == modes["ROBOT_CONTAINS_NOTE"]:
-            self.primary = (255, 165, 0) # Orange
+            self.primary = (255, 140, 0) # Orange
             self.pattern_function = patterns.static
 
         elif current_mode == modes["VISION_SEES_NOTE"]:
-            self.primary = (173, 216, 230) # Light Blue
-            self.pattern_function = patterns.static
+            self.primary = (255, 140, 0) # Orange
+            self.pattern_function = patterns.alternating
 
         elif current_mode == modes["DISABLED_WITHOUT_AUTO"]:
             self.primary = (255, 105, 180) # Hot Pink
