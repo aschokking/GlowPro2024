@@ -48,7 +48,7 @@ class LightStrip:
         elif current_mode == modes["READY_TO_SHOOT"]:
             # Ready to shoot, railgun pattern (requested by drivers)
             self.primary = (0, 255, 0) # Green
-            self.pattern_function = patterns.static
+            self.pattern_function = patterns.railgun
 
         elif current_mode == modes["ROBOT_CONTAINS_NOTE"]:
             self.primary = (255, 140, 0) # Orange
