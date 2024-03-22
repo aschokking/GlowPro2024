@@ -58,7 +58,7 @@ def rainbow(light):
 # Charge up
 def railgun(light):
     for pixel in range(light.PIXEL_COUNT):
-        if loopcount - light.pattern_starting_loop > pixel:
+        if ((loopcount - light.pattern_starting_loop) % light.PIXEL_COUNT) > pixel:
             light.neopixel[pixel] = light.primary
         else:
             light.neopixel[pixel] = (0, 0, 0)
