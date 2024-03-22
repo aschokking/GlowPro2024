@@ -101,7 +101,7 @@ def main_loop():
     feed_watch_dog()
 
     # Increment loopcount
-    patterns.loopcount = (patterns.loopcount + 1) % 16
+    patterns.loopcount = patterns.loopcount + 1
 
     # Read data sent by RoboRIO
     current_mode = str(get_binary_data())
