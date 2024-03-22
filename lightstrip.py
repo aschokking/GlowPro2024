@@ -56,6 +56,7 @@ class LightStrip:
 
         elif current_mode == modes["VISION_SEES_NOTE"]:
             self.primary = (255, 140, 0) # Orange
+            self.secondary = (0, 0, 0)
             self.pattern_function = patterns.alternating
 
         elif current_mode == modes["DISABLED_WITHOUT_AUTO"]:
