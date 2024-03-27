@@ -55,9 +55,8 @@ class LightStrip:
             self.pattern_function = patterns.static
 
         elif current_mode == modes["VISION_SEES_NOTE"]:
-            self.primary = (255, 140, 0) # Orange
-            self.secondary = (0, 0, 0)
-            self.pattern_function = patterns.alternating
+            self.primary = (255, 255, 0) # Yellow
+            self.pattern_function = patterns.wavy
 
         elif current_mode == modes["DISABLED_WITHOUT_AUTO"]:
             self.primary = (255, 105, 180) # Hot Pink
