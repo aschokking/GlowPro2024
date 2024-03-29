@@ -13,6 +13,19 @@ modes = {
     "ROBOT_NOCODE": "15"
 }
 
+colors = {
+    "GREEN": (0, 255, 0),
+    "CYAN": (0, 255, 255),
+    "ORANGE": (255, 140, 0),
+    "YELLOW": (255, 255, 0),
+    "HOT_PINK": (255, 105, 180),
+    "PURPLE": (160, 32, 240),
+    "BLUE": (0, 0, 255),
+    "WHITE": (255, 255, 255),
+    "RED": (255, 0, 0),
+    "NO_COLOR": (0, 0, 0)
+}
+
 
 class LightStrip:
 
@@ -47,29 +60,28 @@ class LightStrip:
 
         elif current_mode == modes["READY_TO_SHOOT"]:
             # Ready to shoot, railgun pattern (requested by drivers)
-            self.primary = (0, 255, 0) # Green
+            self.primary = colors["GREEN"]
             self.pattern_function = patterns.railgun
 
         elif current_mode == modes["ROBOT_CONTAINS_NOTE"]:
-            self.primary = (255, 140, 0) # Orange
+            self.primary = colors["ORANGE"]
             self.pattern_function = patterns.static
 
         elif current_mode == modes["VISION_SEES_NOTE"]:
-            self.primary = (255, 140, 0) # Orange
-            self.secondary = (0, 0, 0)
-            self.pattern_function = patterns.alternating
+            self.primary = colors["YELLOW"]
+            self.pattern_function = patterns.wavy
 
         elif current_mode == modes["DISABLED_WITHOUT_AUTO"]:
-            self.primary = (255, 105, 180) # Hot Pink
+            self.primary = colors["HOT_PINK"]
             self.pattern_function = patterns.static
 
         elif current_mode == modes["DISABLED_WITH_AUTO"]:
-            self.primary = (0, 0, 255) # Blue
+            self.primary = colors["BLUE"]
             self.pattern_function = patterns.static
 
         elif current_mode == modes["PURELY_ENABLED"]:
-            self.primary = (255, 255, 255) # White
+            self.primary = colors["WHITE"]
             self.pattern_function = patterns.static
         else:
-            self.primary = (255, 0, 0) # Red
+            self.primary = colors["RED"]
             self.pattern_function = patterns.static
