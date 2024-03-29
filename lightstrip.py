@@ -7,8 +7,8 @@ modes = {
     "READY_TO_SHOOT": "2",
     "ROBOT_CONTAINS_NOTE": "3",
     "VISION_SEES_NOTE": "4",
-    "DISABLED_WITHOUT_AUTO": "7",
-    "DISABLED_WITH_AUTO": "6",
+    "DISABLED_WITH_DEFAULT_AUTO": "7",
+    "DISABLED_WITH_CUSTOM_AUTO": "6",
     "PURELY_ENABLED": "5", # None of modes 1-4 are active
     "ALL_CAMS_WORKING_DEFAULT": "8",
     "NO_CAMS_WORKING_DEFEAULT": "9",
@@ -102,11 +102,11 @@ class LightStrip:
             self.primary == colors["NO_COLOR"]
             self.pattern_function = patterns.static
 
-        elif current_mode == modes["DISABLED_WITHOUT_AUTO"]:
+        elif current_mode == modes["DISABLED_WITH_DEFAULT_AUTO"]:
             self.primary = colors["HOT_PINK"]
             self.pattern_function = patterns.static
 
-        elif current_mode == modes["DISABLED_WITH_AUTO"]:
+        elif current_mode == modes["DISABLED_WITH_CUSTOM_AUTO"]:
             self.primary = colors["BLUE"]
             self.pattern_function = patterns.static
 
