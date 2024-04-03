@@ -90,19 +90,19 @@ class LightStrip:
             self.pattern_function = patterns.wavy
 
         elif current_mode == modes["NO_CAMS_WORKING_DEFEAULT"]:
-            self.primary == colors["PURPLE"]
+            self.primary = colors["PURPLE"]
             self.pattern_function = patterns.breathing
 
         elif current_mode == modes["ALL_CAMS_WORKING_CUSTOM"]:
-            self.primary == colors["HOT_PINK"]
+            self.primary = colors["BLUE"]
             self.pattern_function = patterns.static
 
         elif current_mode == modes["SOME_CAMS_WORKING_CUSTOM"]:
-            self.primary == colors["HOT_PINK"]
+            self.primary = colors["BLUE"]
             self.pattern_function = patterns.wavy
 
         elif current_mode == modes["NO_CAMS_WORKING_CUSTOM"]:
-            self.primary == colors["HOT_PINK"]
+            self.primary = colors["BLUE"]
             self.pattern_function = patterns.breathing
 
         elif current_mode == modes["PURELY_ENABLED"]:
