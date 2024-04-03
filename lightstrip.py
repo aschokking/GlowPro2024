@@ -3,13 +3,19 @@ import patterns
 
 # Serial Data Modes
 modes = {
-    "AMP_SIGNAL": "1",
+    "READY_WITHOUT_NOTE": "1",
     "READY_TO_SHOOT": "2",
     "ROBOT_CONTAINS_NOTE": "3",
     "VISION_SEES_NOTE": "4",
-    "DISABLED_WITHOUT_AUTO": "7",
-    "DISABLED_WITH_AUTO": "6",
+    "DISABLED_WITH_DEFAULT_AUTO": "7",
+    "DISABLED_WITH_CUSTOM_AUTO": "6",
     "PURELY_ENABLED": "5", # None of modes 1-4 are active
+    "ALL_CAMS_WORKING_DEFAULT": "8",
+    "NO_CAMS_WORKING_DEFEAULT": "9",
+    "SOME_CAMS_WORKING_DEFAULT": "10",
+    "ALL_CAMS_WORKING_CUSTOM": "11",
+    "NO_CAMS_WORKING_CUSTOM": "12",
+    "SOME_CAMS_WORKING_CUSTOM": "13",
     "ROBOT_NOCODE": "15"
 }
 
@@ -55,12 +61,13 @@ class LightStrip:
         self.pattern_starting_loop = patterns.loopcount
 
         # Update color and pattern on light to display
-        if current_mode == modes["AMP_SIGNAL"]:
-            self.pattern_function = patterns.rainbow
-
-        elif current_mode == modes["READY_TO_SHOOT"]:
+        if current_mode == modes["READY_TO_SHOOT"]:
             # Ready to shoot, railgun pattern (requested by drivers)
             self.primary = colors["GREEN"]
+            self.pattern_function = patterns.railgun
+
+        elif current_mode == modes["READY_WITHOUT_NOTE"]:
+            self.primary = colors["RED"]
             self.pattern_function = patterns.railgun
 
         elif current_mode == modes["ROBOT_CONTAINS_NOTE"]:
@@ -71,11 +78,35 @@ class LightStrip:
             self.primary = colors["YELLOW"]
             self.pattern_function = patterns.wavy
 
-        elif current_mode == modes["DISABLED_WITHOUT_AUTO"]:
+        elif current_mode == modes["ALL_CAMS_WORKING_DEFAULT"]:
+            self.primary = colors["PURPLE"]
+            self.pattern_function = patterns.static
+
+        elif current_mode == modes["SOME_CAMS_WORKING_DEFAULT"]:
+            self.primary = colors["PURPLE"]
+            self.pattern_function = patterns.wavy
+
+        elif current_mode == modes["NO_CAMS_WORKING_DEFEAULT"]:
+            self.primary == colors["NO_COLOR"]
+            self.pattern_function = patterns.static
+
+        elif current_mode == modes["ALL_CAMS_WORKING_CUSTOM"]:
+            self.primary == colors["CYAN"]
+            self.pattern_function = patterns.static
+
+        elif current_mode == modes["SOME_CAMS_WORKING_CUSTOM"]:
+            self.primary == colors["CYAN"]
+            self.pattern_function = patterns.wavy
+
+        elif current_mode == modes["NO_CAMS_WORKING_CUSTOM"]:
+            self.primary == colors["NO_COLOR"]
+            self.pattern_function = patterns.static
+
+        elif current_mode == modes["DISABLED_WITH_DEFAULT_AUTO"]:
             self.primary = colors["HOT_PINK"]
             self.pattern_function = patterns.static
 
-        elif current_mode == modes["DISABLED_WITH_AUTO"]:
+        elif current_mode == modes["DISABLED_WITH_CUSTOM_AUTO"]:
             self.primary = colors["BLUE"]
             self.pattern_function = patterns.static
 
