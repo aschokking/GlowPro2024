@@ -19,25 +19,7 @@ def breathing(light):
     for pixel in range(light.PIXEL_COUNT):
         light.neopixel[pixel] = tuple(x * (multiplier/2) for x in light.primary)
     light.neopixel.show()
-        
 
-# Alternates between two color of lights, Ex.
-# Loop 1: All green
-# Loop 2: All red
-def alternating(light):
-    global alternating_loopcount
-    for pixel in range(light.PIXEL_COUNT):
-        # Alternate appproximately 2 times a second
-        if loopcount % (frames_per_second // 2) != light.pattern_starting_loop % (frames_per_second // 2):
-            continue
-
-        alternating_loopcount += 1
-        if alternating_loopcount % 2 == 0:
-            light.neopixel[pixel] = light.primary
-        else:
-            light.neopixel[pixel] = light.secondary
-    light.neopixel.show()
-    
 
 # Think of this pattern as if you are static and cars in front of you
 # Are constantly driving by (one direction)
@@ -59,6 +41,20 @@ def rainbow(light):
 def railgun(light):
     for pixel in range(light.PIXEL_COUNT):
         if ((loopcount - light.pattern_starting_loop) % light.PIXEL_COUNT) > pixel:
+            light.neopixel[pixel] = light.primary
+        else:
+            light.neopixel[pixel] = (0, 0, 0)
+    light.neopixel.show()
+
+
+def flashing(light):
+    global alternating_loopcount
+    loop = loopcount - light.pattern_starting_loop
+    if loop % (frames_per_second // 2) == 0:
+        alternating_loopcount += 1
+    
+    for pixel in range(light.PIXEL_COUNT):
+        if alternating_loopcount % 2 == 0:
             light.neopixel[pixel] = light.primary
         else:
             light.neopixel[pixel] = (0, 0, 0)
