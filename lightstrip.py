@@ -79,7 +79,7 @@ class LightStrip:
 
         elif current_mode == modes["SIDE_CAM_SEES_NOTE"]:
             self.primary = colors["YELLOW"]
-            self.pattern_function = patterns.flashing
+            self.pattern_function = patterns.breathing
     
         elif current_mode == modes["ALL_CAMS_WORKING_DEFAULT"]:
             self.primary = colors["PURPLE"]
@@ -91,7 +91,7 @@ class LightStrip:
 
         elif current_mode == modes["NO_CAMS_WORKING_DEFEAULT"]:
             self.primary == colors["PURPLE"]
-            self.pattern_function = patterns.flashing
+            self.pattern_function = patterns.breathing
 
         elif current_mode == modes["ALL_CAMS_WORKING_CUSTOM"]:
             self.primary == colors["CYAN"]
@@ -103,7 +103,7 @@ class LightStrip:
 
         elif current_mode == modes["NO_CAMS_WORKING_CUSTOM"]:
             self.primary == colors["CYAN"]
-            self.pattern_function = patterns.flashing
+            self.pattern_function = patterns.breathing
 
         elif current_mode == modes["PURELY_ENABLED"]:
             self.primary = colors["WHITE"]
