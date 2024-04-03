@@ -58,3 +58,4 @@ def flashing(light):
             light.neopixel[pixel] = light.primary
         else:
             light.neopixel[pixel] = (0, 0, 0)
+    light.neopixel.show()
