@@ -1,5 +1,6 @@
 from rainbowio import colorwheel
 from math import sin
+from random import randint
 
 frames_per_second = 12
 loopcount = 0
@@ -62,4 +63,24 @@ def railgun(light):
             light.neopixel[pixel] = light.primary
         else:
             light.neopixel[pixel] = (0, 0, 0)
+    light.neopixel.show()
+
+
+# Win a lottery ticket today
+def random_a_b_colors(light):
+    success_weight = 50
+    for pixel in range(light.PIXEL_COUNT):
+        value = randint(1, 100)
+        if value <= success_weight:
+            light.neopixel[pixel] = light.primary
+        else:
+            light.neopixel[pixel] = light.secondary
+    light.neopixel.show()
+
+
+
+def random_colors(light):
+    for pixel in range(light.PIXEL_COUNT):
+        r, g, b = randint(0, 255), randint(0, 255), randint(0, 255)
+        light.neopixel[pixel] = (r, g, b)
     light.neopixel.show()
