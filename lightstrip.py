@@ -66,8 +66,8 @@ class LightStrip:
             self.pattern_function = patterns.railgun
 
         elif current_mode == modes["READY_WITHOUT_NOTE"]:
-            self.primary = colors["RED"]
-            self.pattern_function = patterns.railgun
+            self.primary = colors["GREEN"]
+            self.pattern_function = patterns.static
 
         elif current_mode == modes["ROBOT_CONTAINS_NOTE"]:
             self.primary = colors["ORANGE"]
@@ -94,15 +94,15 @@ class LightStrip:
             self.pattern_function = patterns.breathing
 
         elif current_mode == modes["ALL_CAMS_WORKING_CUSTOM"]:
-            self.primary == colors["CYAN"]
+            self.primary == colors["HOT_PINK"]
             self.pattern_function = patterns.static
 
         elif current_mode == modes["SOME_CAMS_WORKING_CUSTOM"]:
-            self.primary == colors["CYAN"]
+            self.primary == colors["HOT_PINK"]
             self.pattern_function = patterns.wavy
 
         elif current_mode == modes["NO_CAMS_WORKING_CUSTOM"]:
-            self.primary == colors["CYAN"]
+            self.primary == colors["HOT_PINK"]
             self.pattern_function = patterns.breathing
 
         elif current_mode == modes["PURELY_ENABLED"]:
