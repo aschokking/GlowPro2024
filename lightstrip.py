@@ -6,9 +6,8 @@ modes = {
     "READY_WITHOUT_NOTE": "1",
     "READY_TO_SHOOT": "2",
     "ROBOT_CONTAINS_NOTE": "3",
-    "VISION_SEES_NOTE": "4",
-    "DISABLED_WITH_DEFAULT_AUTO": "7",
-    "DISABLED_WITH_CUSTOM_AUTO": "6",
+    "CENTER_CAM_SEES_NOTE": "4",
+    "SIDE_CAM_SEES_NOTE": "7",
     "PURELY_ENABLED": "5", # None of modes 1-4 are active
     "ALL_CAMS_WORKING_DEFAULT": "8",
     "NO_CAMS_WORKING_DEFEAULT": "9",
@@ -74,10 +73,14 @@ class LightStrip:
             self.primary = colors["ORANGE"]
             self.pattern_function = patterns.static
 
-        elif current_mode == modes["VISION_SEES_NOTE"]:
+        elif current_mode == modes["CENTER_CAM_SEES_NOTE"]:
             self.primary = colors["YELLOW"]
             self.pattern_function = patterns.wavy
 
+        elif current_mode == modes["SIDE_CAM_SEES_NOTE"]:
+            self.primary = colors["YELLOW"]
+            self.pattern_function = patterns.static
+    
         elif current_mode == modes["ALL_CAMS_WORKING_DEFAULT"]:
             self.primary = colors["PURPLE"]
             self.pattern_function = patterns.static
@@ -100,14 +103,6 @@ class LightStrip:
 
         elif current_mode == modes["NO_CAMS_WORKING_CUSTOM"]:
             self.primary == colors["NO_COLOR"]
-            self.pattern_function = patterns.static
-
-        elif current_mode == modes["DISABLED_WITH_DEFAULT_AUTO"]:
-            self.primary = colors["HOT_PINK"]
-            self.pattern_function = patterns.static
-
-        elif current_mode == modes["DISABLED_WITH_CUSTOM_AUTO"]:
-            self.primary = colors["BLUE"]
             self.pattern_function = patterns.static
 
         elif current_mode == modes["PURELY_ENABLED"]:
