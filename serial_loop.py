@@ -66,22 +66,22 @@ def get_serial_data() -> str:
     # Tolerance is for if there are no serial data sent from the Java side
     # *There may be some delay if both sides are sending at same or similar rate*
     # Tolerance count is 2, therefore it will tolerate two frames/fps seconds
-    if tolerance_count >= tolerance:
-        tolerance_count = 0
-        return modes["ROBOT_NOCODE"]
-    tolerance_count += 1
+    # if tolerance_count >= tolerance:
+    #     tolerance_count = 0
+    #     return modes["ROBOT_NOCODE"]
+    # tolerance_count += 1
     return last_mode
 
 
 def main_loop():
     global current_mode
-    global last_mode
+    global last_mode    
 
     # Increment loopcount
     patterns.loopcount += 1
 
     # Read serial data sent by RoboRIO
-    # current_mode = str(get_serial_data())
+    current_mode = str(get_serial_data())
     # test_arr = ["1", "2", "3", "4", "31", "32", "33", "34"]
 
     # # Match lights with serial data and update lights
@@ -89,8 +89,9 @@ def main_loop():
     # for i in range(len(test_arr)):
     #     print(test_arr[i])
     #     time.sleep(5)
-    strip1.assign_mode(current_mode, last_mode)
-    strip1.pattern_function(strip1)
+    for ls in lightstrips:
+        ls.assign_mode(current_mode, last_mode)
+        ls.pattern_function(ls)
     #     if i == len(test_arr) - 1:
     #         i = 0
 
