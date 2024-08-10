@@ -57,9 +57,17 @@ def get_serial_data() -> str:
     # Return serial data if any
     if supervisor.runtime.serial_bytes_available:
         data = serial.readline()
-        if data:
-            print(data)
-            tolerance_count = 0
+
+        # print debugging
+        # print('current contents of data: ' + data)
+        # print('are the current contents only whitespace? ' + str(str(data).isspace()))
+        # print('current length of data: ' + str(len(data)))
+        # print('')
+
+        if not data.isspace():
+        # if data:
+            # tolerance_count = 0
+            print('current value of data: ' + str(data))
             return data.strip()
     
     # Check tolerance and return previous, if tolerance count reached, "31"
