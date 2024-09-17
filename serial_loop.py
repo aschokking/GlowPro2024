@@ -58,26 +58,16 @@ def get_serial_data() -> str:
     if supervisor.runtime.serial_bytes_available:
         data = serial.readline()
 
-        # print debugging
+        # Print debugging statements
         # print('current contents of data: ' + data)
         # print('are the current contents only whitespace? ' + str(str(data).isspace()))
         # print('current length of data: ' + str(len(data)))
         # print('')
 
         if not data.isspace():
-        # if data:
-            # tolerance_count = 0
             print('current value of data: ' + str(data))
             return data.strip()
     
-    # Check tolerance and return previous, if tolerance count reached, "31"
-    # Tolerance is for if there are no serial data sent from the Java side
-    # *There may be some delay if both sides are sending at same or similar rate*
-    # Tolerance count is 2, therefore it will tolerate two frames/fps seconds
-    # if tolerance_count >= tolerance:
-    #     tolerance_count = 0
-    #     return modes["ROBOT_NOCODE"]
-    # tolerance_count += 1
     return last_mode
 
 
@@ -90,18 +80,11 @@ def main_loop():
 
     # Read serial data sent by RoboRIO
     current_mode = str(get_serial_data())
-    # test_arr = ["1", "2", "3", "4", "31", "32", "33", "34"]
 
     # # Match lights with serial data and update lights
-    # # for lightstrip in lightstrips:
-    # for i in range(len(test_arr)):
-    #     print(test_arr[i])
-    #     time.sleep(5)
     for ls in lightstrips:
         ls.assign_mode(current_mode, last_mode)
         ls.pattern_function(ls)
-    #     if i == len(test_arr) - 1:
-    #         i = 0
 
     last_mode = current_mode
 
