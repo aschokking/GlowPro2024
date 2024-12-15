@@ -54,18 +54,37 @@ class LightStrip:
             self.primary = (255, 165, 0)
             self.pattern_function = patterns.static
 
-        elif current_mode == modes["VISION_SEES_NOTE"]:
-            self.primary = (173, 216, 230)
-            self.secondary = (255, 255, 255)
-            self.pattern_function = patterns.alternating
+        elif current_mode == modes["CENTER_CAM_SEES_NOTE"]:
+            self.primary = colors["YELLOW"]
+            self.pattern_function = patterns.wavy
 
-        elif current_mode == modes["DISABLED_WITHOUT_AUTO"]:
-            # TO-DO
-            pass
+        elif current_mode == modes["SIDE_CAM_SEES_NOTE"]:
+            self.primary = colors["YELLOW"]
+            self.pattern_function = patterns.breathing
+    
+        elif current_mode == modes["ALL_CAMS_WORKING_DEFAULT"]:
+            self.primary = colors["PURPLE"]
+            self.pattern_function = patterns.static
 
-        elif current_mode == modes["DISABLED_WITH_AUTO"]:
-            # TO-DO
-            pass
+        elif current_mode == modes["SOME_CAMS_WORKING_DEFAULT"]:
+            self.primary = colors["PURPLE"]
+            self.pattern_function = patterns.wavy
+
+        elif current_mode == modes["NO_CAMS_WORKING_DEFEAULT"]:
+            self.primary == colors["PURPLE"]
+            self.pattern_function = patterns.breathing
+
+        elif current_mode == modes["ALL_CAMS_WORKING_CUSTOM"]:
+            self.primary == colors["HOT_PINK"]
+            self.pattern_function = patterns.static
+
+        elif current_mode == modes["SOME_CAMS_WORKING_CUSTOM"]:
+            self.primary == colors["HOT_PINK"]
+            self.pattern_function = patterns.wavy
+
+        elif current_mode == modes["NO_CAMS_WORKING_CUSTOM"]:
+            self.primary == colors["HOT_PINK"]
+            self.pattern_function = patterns.breathing
 
         elif current_mode == modes["PURELY_ENABLED"]:
             self.primary = (255, 255, 255)

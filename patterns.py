@@ -1,6 +1,4 @@
 from rainbowio import colorwheel
-# from lightstrip import LightStrip
-# import lightstrip
 from math import sin
 
 frames_per_second = 12
@@ -56,6 +54,22 @@ def rainbow(light: LightStrip):
         light.neopixel[pixel] = colorwheel(((255 / frames_per_second) * loopcount) % 255)
     light.neopixel.show()
 
+# Alternates between two color of lights, Ex.
+# Loop 1: All green
+# Loop 2: All red
+def alternating(light):
+    global alternating_loopcount
+    for pixel in range(light.PIXEL_COUNT):
+        # Alternate appproximately 2 times a second
+        if loopcount % (frames_per_second // 2) != light.pattern_starting_loop % (frames_per_second // 2):
+            continue
+
+        alternating_loopcount += 1
+        if alternating_loopcount % 2 == 0:
+            light.neopixel[pixel] = light.primary
+        else:
+            light.neopixel[pixel] = light.secondary
+    light.neopixel.show()
 
 # Charge up
 def railgun(light: LightStrip):

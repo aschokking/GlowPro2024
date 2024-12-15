@@ -58,14 +58,7 @@ def get_serial_data() -> str:
     if supervisor.runtime.serial_bytes_available:
         data = serial.readline()
 
-        # Print debugging statements
-        # print('current contents of data: ' + data)
-        # print('are the current contents only whitespace? ' + str(str(data).isspace()))
-        # print('current length of data: ' + str(len(data)))
-        # print('')
-
         if not data.isspace():
-            print('current value of data: ' + str(data))
             return data.strip()
     
     return last_mode
