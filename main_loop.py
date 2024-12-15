@@ -104,7 +104,8 @@ def main_loop():
     patterns.loopcount = patterns.loopcount + 1
 
     # Read data sent by RoboRIO
-    current_mode = str(get_binary_data())
+    # current_mode = str(get_binary_data())
+    current_mode = "11"
 
     # Match lights with serial data and update lights
     #for lightstrip in lightstrips:
